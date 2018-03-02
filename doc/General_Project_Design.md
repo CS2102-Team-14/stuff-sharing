@@ -1,4 +1,4 @@
-#### (1) Login / Crate account Page  
+### (1) Login / Crate account Page  
 -   **Login (page &rarr; 2)** *upon successful login*
 -   **Create Account (page &rarr; 5)**
     -   Everyone must create an account to use the service
@@ -6,7 +6,7 @@
     -   Username, password, general location (south, west, east, north,
         central), Address, phone number
 
-#### (2) Home Page:
+### (2) Home Page:
 -   **Display Items currently being lent by you** (item name, borrower
     name, borrower phone number, price received, return date)
     -   on the return date, the item will be automatically removed from this list and asssumed to have been returned 
@@ -44,18 +44,18 @@
 -   **Change Account details** (page &rarr; 5)
 -   **Display interesting information** (complex queries to be decided)
 
-#### (3) Item to borrow Page:
+### (3) Item to borrow Page:
 -   Display Item particulars (name, location, borrower name, borrower
     phone number, return date, LoanOut price, current highest bid)
 -   Place your bid
 
-#### (4) Add item to lend Page:
+### (4) Add item to lend Page:
 
 -   Enter item particulars (name, category, return date, LoanOut price)
     -   Location will be attached automatically based on user’s account
         location
 
-#### (5) Change Account Details:
+### (5) Change Account Details:
 
 -   Update your account fields (name, address, phone number etc.)
 -   Invalid if some fields are missing
