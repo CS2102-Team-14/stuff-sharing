@@ -1,0 +1,20 @@
+
+<!-- Custom styles for this template -->
+<link href="login/login.template.css" rel="stylesheet">
+<div class="container login">
+  <form class="form-login" ng-submit="$ctrl.login(formData)" name="loginForm">
+    <img class="mb-4" src="img/SS-logo.png" alt="" width="300" height="300">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" ng-show="$ctrl.showMessage">
+      <strong>Something went wrong</strong> {{$ctrl.message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <label for="inputUsername" class="sr-only">Email address</label>
+    <input type="text" id="inputUsername" class="form-control" placeholder="Username" ng-model="formData.username" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="formData.password" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    <p class="mt-5 mb-3 text-muted">By Team 14</p>
+  </form>
+</div>

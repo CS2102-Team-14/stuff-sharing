@@ -7,7 +7,7 @@ RUN pip install -U pip
 RUN pip install -U flask
 RUN pip install -U flask-cors
 RUN pip install -U bcrypt
-RUN pip install -U psycopg2
+RUN pip install -U psycopg2-binary
 RUN echo "ServerName localhost  " >> /etc/apache2/apache2.conf
 RUN echo "$user     hard    nproc       20" >> /etc/security/limits.conf
 EXPOSE 80

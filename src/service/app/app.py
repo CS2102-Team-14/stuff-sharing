@@ -1,6 +1,7 @@
 #!/bin/env python2
 
 from flask import Flask, g
+from flask_cors import CORS
 import json
 import os
 import psycopg2
@@ -10,6 +11,7 @@ import users
 
 app = Flask(__name__)
 app.register_blueprint(users.users_controller)
+CORS(app)
 
 @app.route("/", methods=["GET"])
 def index():
