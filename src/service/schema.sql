@@ -1,8 +1,16 @@
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS sessions CASCADE;
+
 CREATE TABLE users (
   username TEXT PRIMARY KEY,
   password TEXT NOT NULL,
   fullname TEXT NOT NULL,
   CONSTRAINT username_length_ge_8 CHECK (char_length(username) >= 6)
+);
+
+CREATE TABLE sessions (
+  username TEXT REFERENCES users(username),
+  token TEXT PRIMARY KEY
 );
 
 INSERT INTO users VALUES (

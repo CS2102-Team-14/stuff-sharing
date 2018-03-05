@@ -71,7 +71,13 @@ def users_authenticate():
             else:
                 stored_password = user[0]
                 if bcrypt.hashpw(password, stored_password) == stored_password:
-                    return jsonify({"error": False, "token": uuid.uuid4()})
+                    token = str(uuid.uuid4())
+                    with app.get_db().cursor() as cursor:
+                        cursor.execute(
+                        "INSERT INTO sessions VALUES (%s, %s)",
+                        [username, token])
+                        print_msg("Created session (%s, %s)" % (username, token))
+                    return jsonify({"error": False, "token": token})
                 else:
                     return respond_authentication_failed()
         except Exception as e:

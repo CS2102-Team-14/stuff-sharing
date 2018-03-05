@@ -43,6 +43,8 @@ def get_db():
         db = psycopg2.connect("dbname=root user=root password=root")
         setattr(g, DATABASE_KEY, db)
         print("[DB] Connection established")
+    else:
+        db = getattr(g, DATABASE_KEY)
     return db
 
 @app.teardown_appcontext
