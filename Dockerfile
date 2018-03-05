@@ -13,7 +13,7 @@ RUN echo "$user     hard    nproc       20" >> /etc/security/limits.conf
 EXPOSE 80
 EXPOSE 8080
 ADD ./src/service /service
-ADD ./src/html /html
+ADD ./src/html /var/www/html
 USER postgres
 RUN /etc/init.d/postgresql start &&\
 psql --command "CREATE USER root WITH SUPERUSER PASSWORD 'root';" &&\

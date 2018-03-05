@@ -1,10 +1,11 @@
 'use strict';
 
-var loginModule = angular.module('login', ['ngRoute']);
-
-loginModule.service('SessionService', function ($http) {
+angular.module('login', [
+  'ngRoute'
+]).
+service('SessionService', function ($http) {
   var sessionService = {
-    'token': null,
+    'token': undefined,
     'login': function login(username, password, callback) {
       $http.post(
         'http://localhost:8080/users/authenticate',
@@ -17,7 +18,7 @@ loginModule.service('SessionService', function ($http) {
         if(data.error == false) {
           console.log("Authentication token: " + data.token);
           self.token = data.token;
-          callback(true, null);
+          callback(true, undefined);
         } else {
           console.log("Authentication failed: " + data.error);
           callback(false, data.error);
@@ -25,6 +26,13 @@ loginModule.service('SessionService', function ($http) {
       }, function error() {
         console.log("Login request error");
       });
+    },
+    'isLoggedIn': function isLoggedIn() {
+      return self.token !== undefined;
+    },
+    'logout': function logout() {
+      // TODO: Also invalidate session on server side
+      self.token = undefined;
     }
   };
   return sessionService;

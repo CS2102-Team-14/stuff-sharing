@@ -3,7 +3,7 @@
 angular.module('login').
 component('login', {
   templateUrl: 'login/login.template.html',
-  controller: function LoginController($scope, $element, $attrs, $http, SessionService) {
+  controller: function LoginController($scope, $element, $attrs, $http, $location, SessionService) {
     var ctrl = this;
 
     $scope.formData = {
@@ -15,7 +15,7 @@ component('login', {
 
     ctrl.loginCallback = function(success, error) {
       if(success) {
-        console.log("Authentication successful");
+        $location.path('/items');
       } else {
         ctrl.showMessage = true;
         ctrl.message = error;

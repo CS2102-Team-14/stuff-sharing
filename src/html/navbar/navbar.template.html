@@ -7,14 +7,17 @@
 
     <div class="collapse navbar-collapse" id="navbarsExample07">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#">Home</a>
+        </li> -->
+        <li class="nav-item {{location.substring(0, 6) == '/items' ? 'active' : ''}}">
+          <a class="nav-link" href="#!/items">Items</a>
         </li>
-        <li class="nav-item {{location == '/login' ? 'active' : ''}}">
+        <li ng-show="!SessionService.isLoggedIn()" class="nav-item {{location == '/login' ? 'active' : ''}}">
           <a class="nav-link" href="#!/login">Login</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#!/items">Items</a>
+        <li ng-show="SessionService.isLoggedIn()" class="nav-item">
+          <a class="nav-link" href="#!/logout">Logout</a>
         </li>
         <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
