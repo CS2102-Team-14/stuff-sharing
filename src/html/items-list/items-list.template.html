@@ -5,28 +5,51 @@
       <p class="lead">TODO: my bids go here</p>
       <hr class="my-4">
       <h1 class="display-4">My Items</h1>
-      <p class="lead">TODO: my items go here</p>
+      <div class="container" ng-if="myItems != undefined && myItems.length > 0">
+        <hr class="my-4">
+        <div class="row" ng-repeat="row in myItems" >
+          <div class="col-md-4" ng-repeat="item in row">
+            <div class="card mb-4 box-shadow">
+              <img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{item[3]}}" alt="Card image cap">
+              <div class="card-body">
+                <p class="card-text">{{item[5] ? item[5] : 'No description'}}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <button ng-if="item[7] == 0" class="btn btn-sm btn-success" ng-click="editItem(item[0])">Edit</button>
+                    <button ng-if="item[7] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[4]}}</button>
+                  </div>
+                  <small class="text-muted">Owner: {{item[1]}}</small>
+                  <small class="text-muted">{{item[6]}} days</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="lead" ng-if="myItems == undefined">Login to manage your items</p>
+      <p class="lead" ng-if="myItems.length == 0">None yet, add one?</p>
       <hr class="my-4">
-      <p class="lead">
+      <p class="lead" ng-if="myItems != undefined">
         <a class="btn btn-primary btn-lg" href="#!/items/add" role="button">Add Item</a>
       </p>
     </div>
     <h1 class="display-4">All Items</h1>
     <hr class="my-4">
-    <div class="row" ng-repeat="row in items">
+    <div class="row" ng-repeat="row in allItems">
       <div class="col-md-4" ng-repeat="item in row">
         <div class="card mb-4 box-shadow">
-          <img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{item[2]}}" alt="Card image cap">
+          <img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{item[3]}}" alt="Card image cap">
           <div class="card-body">
-            <p class="card-text">{{item[4] ? item[4] : 'No description'}}</p>
+            <p class="card-text">{{item[5] ? item[5] : 'No description'}}</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <button ng-if="item[6] == 0" type="button" class="btn btn-sm btn-success">Bid</button>
-                <button ng-if="item[6] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[3]}}</button>
+                <button ng-if="item[7] == 0" type="button" class="btn btn-sm btn-success">Bid</button>
+                <button ng-if="item[7] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[4]}}</button>
               </div>
-              <small class="text-muted">Owner: {{item[0]}}</small>
-              <small class="text-muted">{{item[5]}} days</small>
+              <small class="text-muted">Owner: {{item[1]}}</small>
+              <small class="text-muted">{{item[6]}} days</small>
             </div>
           </div>
         </div>

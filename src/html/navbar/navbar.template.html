@@ -10,10 +10,10 @@
         <!-- <li class="nav-item">
           <a class="nav-link" href="#">Home</a>
         </li> -->
-        <li class="nav-item {{location.substring(0, 6) == '/items' ? 'active' : ''}}">
+        <li class="nav-item {{LocationService.path().startsWith('/items') ? 'active' : ''}}">
           <a class="nav-link" href="#!/items">Items</a>
         </li>
-        <li ng-show="!SessionService.isLoggedIn()" class="nav-item {{location == '/login' ? 'active' : ''}}">
+        <li ng-show="!SessionService.isLoggedIn()" class="nav-item {{LocationService.path() == '/login' ? 'active' : ''}}">
           <a class="nav-link" href="#!/login">Login</a>
         </li>
         <li ng-show="SessionService.isLoggedIn()" class="nav-item">

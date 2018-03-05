@@ -1,5 +1,7 @@
 'use strict';
 
+var baseUrl = '';
+
 angular.module('login', [
   'ngRoute'
 ]).
@@ -9,7 +11,7 @@ service('SessionService', function ($http) {
     'token': undefined,
     'login': function login(username, password, callback) {
       $http.post(
-        self.baseUrl + '/users/authenticate',
+        this.baseUrl + '/users/authenticate',
         {
           'username': username,
           'password': password
@@ -34,6 +36,22 @@ service('SessionService', function ($http) {
     'logout': function logout() {
       // TODO: Also invalidate session on server side
       self.token = undefined;
+    },
+    'request': function request(method, path, data, successCallback, errorCallback) {
+      $http({
+        'url': this.baseUrl + path,
+        'method': method,
+        'data': data,
+      })
+      .then(successCallback, errorCallback);
+    },
+    'authenticatedRequest': function authenticatedRequest(method, path, data, successCallback, errorCallback) {
+      if(this.isLoggedIn()) {
+        data.token = self.token;
+        this.request(method, path, data, successCallback, errorCallback);
+      } else {
+        errorCallback("Not logged in");
+      }
     }
   };
   return sessionService;

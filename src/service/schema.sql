@@ -15,6 +15,7 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE items (
+  id SERIAL PRIMARY KEY,
   owner TEXT REFERENCES users(username),
   borrower TEXT REFERENCES users(username),
   item_name TEXT NOT NULL,
@@ -44,9 +45,9 @@ INSERT INTO users VALUES (
   'Test User 3'
 );
 
-INSERT INTO items VALUES (
+INSERT INTO items (owner, borrower, item_name, item_price, item_description, loan_duration, status) VALUES (
   'tester1',
-  NULL,
+  'tester2',
   'Drill',
   20,
   'Can drill holes into concrete or wood.',
@@ -54,7 +55,7 @@ INSERT INTO items VALUES (
   0
 );
 
-INSERT INTO items VALUES (
+INSERT INTO items (owner, borrower, item_name, item_price, item_description, loan_duration, status) VALUES (
   'tester1',
   'tester2',
   'Scissors',
@@ -64,7 +65,7 @@ INSERT INTO items VALUES (
   1
 );
 
-INSERT INTO items VALUES (
+INSERT INTO items (owner, borrower, item_name, item_price, item_description, loan_duration, status) VALUES (
   'tester2',
   NULL,
   'Pikachu Onesie',
@@ -74,7 +75,7 @@ INSERT INTO items VALUES (
   0
 );
 
-INSERT INTO items VALUES (
+INSERT INTO items (owner, borrower, item_name, item_price, item_description, loan_duration, status) VALUES (
   'tester3',
   NULL,
   'MTG Deck',
@@ -84,7 +85,7 @@ INSERT INTO items VALUES (
   0
 );
 
-INSERT INTO items VALUES (
+INSERT INTO items (owner, borrower, item_name, item_price, item_description, loan_duration, status) VALUES (
   'tester3',
   NULL,
   'Beer Cooler',

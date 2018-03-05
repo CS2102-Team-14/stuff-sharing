@@ -76,6 +76,7 @@ def users_authenticate():
                         cursor.execute(
                         "INSERT INTO sessions VALUES (%s, %s)",
                         [username, token])
+                        cursor.connection.commit()
                         print_msg("Created session (%s, %s)" % (username, token))
                     return jsonify({"error": False, "token": token})
                 else:
@@ -83,3 +84,18 @@ def users_authenticate():
         except Exception as e:
             print_msg("%s %s" % (type(e), e))
             return respond_authentication_failed()
+
+def validate_token(token):
+    with app.get_db().cursor() as cursor:
+        try:
+            cursor.execute(
+            "SELECT * FROM sessions WHERE token = %s",
+            [str(token)])
+            session = cursor.fetchone()
+            if session is None:
+                return False, None
+            else:
+                return True, session[0]
+        except Exception as e:
+            print_msg("%s %s" % (type(e), e))
+            return False, None
