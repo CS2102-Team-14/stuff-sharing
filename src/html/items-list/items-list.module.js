@@ -1,3 +1,6 @@
 'use strict';
 
-angular.module('itemsList', ['ngRoute']);
+angular.module('itemsList', [
+  'ngRoute',
+  'login'
+]);

@@ -5,10 +5,11 @@ angular.module('login', [
 ]).
 service('SessionService', function ($http) {
   var sessionService = {
+    'baseUrl': 'http://localhost:8080',
     'token': undefined,
     'login': function login(username, password, callback) {
       $http.post(
-        'http://localhost:8080/users/authenticate',
+        self.baseUrl + '/users/authenticate',
         {
           'username': username,
           'password': password

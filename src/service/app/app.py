@@ -6,13 +6,16 @@ import json
 import os
 import psycopg2
 
-# Import application controllers
+# Import and register application controllers
 import users
+import items
 
 app = Flask(__name__)
 app.register_blueprint(users.users_controller)
+app.register_blueprint(items.items_controller)
 CORS(app)
 
+# REST API root gives database connection status
 @app.route("/", methods=["GET"])
 def index():
     return app.response_class(
@@ -26,6 +29,13 @@ def index():
 ### Database common functions ###
 
 DATABASE_KEY = "postgres_db"
+
+# Typecast database NUMERIC to float
+DEC2FLOAT = psycopg2.extensions.new_type(
+    psycopg2.extensions.DECIMAL.values,
+    'DEC2FLOAT',
+    lambda value, curs: float(value) if value is not None else None)
+psycopg2.extensions.register_type(DEC2FLOAT)
 
 @app.cli.command()
 def initdb():
