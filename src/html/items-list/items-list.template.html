@@ -1,6 +1,18 @@
 <div class="album py-5 bg-light">
   <div class="container">
-
+    <div class="jumbotron">
+      <h1 class="display-4">My Bids</h1>
+      <p class="lead">TODO: my bids go here</p>
+      <hr class="my-4">
+      <h1 class="display-4">My Items</h1>
+      <p class="lead">TODO: my items go here</p>
+      <hr class="my-4">
+      <p class="lead">
+        <a class="btn btn-primary btn-lg" href="#!/items/add" role="button">Add Item</a>
+      </p>
+    </div>
+    <h1 class="display-4">All Items</h1>
+    <hr class="my-4">
     <div class="row" ng-repeat="row in items">
       <div class="col-md-4" ng-repeat="item in row">
         <div class="card mb-4 box-shadow">
@@ -20,6 +32,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
