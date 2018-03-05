@@ -46,7 +46,7 @@ component('itemForm', {
         '/items/' + id,
         $scope.item,
         function success(response) {
-          console.log(response.data);
+          $location.path('/items');
         },
         function error(error) {
           console.log(error)
