@@ -36,7 +36,7 @@
         <button class="btn btn-primary" ng-click="submit()">Submit</button>
       </form>
     </div>
-    <div class="row">
+    <div class="row" ng-if="showDelete">
       <div class="col-md-4 mx-auto">
         <hr class="my-4">
         <button ng-click="deleteItem()" class="btn btn-danger btn-lg btn-block">Delete Item</button>
