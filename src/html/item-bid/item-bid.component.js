@@ -30,7 +30,7 @@ component('itemBid', {
 			var id = parseInt($routeParams.id);
 			SessionService.authenticatedRequest(
 				'POST',
-				'/items/bid/' + id,
+				'/items/' + id + '/bid',
 				{'amount': $scope.amount},
 				function success(response) {
 					var error = response.data.error;
@@ -52,7 +52,7 @@ component('itemBid', {
 			var id = parseInt($routeParams.id);
 			SessionService.authenticatedRequest(
 				'POST',
-				'/items/bids/' + id,
+				'/items/' + id + '/bids',
 				{'amount': $scope.amount},
 				function success(response) {
 					console.log(response.data);

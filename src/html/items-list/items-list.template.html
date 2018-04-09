@@ -1,59 +1,66 @@
 <div class="album py-5 bg-light">
-  <div class="container">
-    <div class="jumbotron">
-      <h1 class="display-4">My Bids</h1>
-      <p class="lead">TODO: my bids go here</p>
-      <hr class="my-4">
-      <h1 class="display-4">My Items</h1>
-      <div class="container" ng-if="myItems != undefined && myItems.length > 0">
-        <hr class="my-4">
-        <div class="row" ng-repeat="row in myItems" >
-          <div class="col-md-4" ng-repeat="item in row">
-            <div class="card mb-4 box-shadow">
-              <img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{item[3]}}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text">{{item[5] ? item[5] : 'No description'}}</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <button ng-if="item[7] == 0" class="btn btn-sm btn-success" ng-click="editItem(item[0])">Edit</button>
-                    <button ng-if="item[7] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[4]}}</button>
-                  </div>
-                  <small class="text-muted">Owner: {{item[1]}}</small>
-                  <small class="text-muted">{{item[6]}} days</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p class="lead" ng-if="myItems == undefined">Login to manage your items</p>
-      <p class="lead" ng-if="myItems.length == 0">None yet, add one?</p>
-      <hr class="my-4">
-      <p class="lead" ng-if="myItems != undefined">
-        <a class="btn btn-primary btn-lg" href="#!/items/add" role="button">Add Item</a>
-      </p>
-    </div>
-    <h1 class="display-4">All Items</h1>
-    <hr class="my-4">
-    <div class="row" ng-repeat="row in allItems">
-      <div class="col-md-4" ng-repeat="item in row">
-        <div class="card mb-4 box-shadow">
-          <img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{item[3]}}" alt="Card image cap">
-          <div class="card-body">
-            <p class="card-text">{{item[5] ? item[5] : 'No description'}}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a ng-if="item[7] == 0" href="#!/items/bid/{{item[0]}}" type="button" class="btn btn-sm btn-success">Bid</a>
-                <button ng-if="item[7] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[4]}}</button>
-              </div>
-              <small class="text-muted">Owner: {{item[1]}}</small>
-              <small class="text-muted">{{item[6]}} days</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="container">
+		<div class="jumbotron">
+			<h1 class="display-4">My Bids</h1>
+			<p class="lead">
+				<div ng-repeat="bid in myBids" class="alert alert-primary" role="alert">
+				<strong>{{bid[2] | currency : $ : 2}} (+{{bid[2] - bid[7] | currency : $ : 2}})</strong> offered to <strong>{{bid[4]}}</strong> to loan <strong>{{bid[6]}}</strong> for <strong>{{bid[9]}}</strong> days
+				</div>
+				<div ng-if="myBids.length == 0" class="alert alert-danger" role="alert">
+					No bids yet
+				</div>
+			</p>
+			<hr class="my-4">
+			<h1 class="display-4">My Items</h1>
+			<div class="container" ng-if="myItems != undefined && myItems.length > 0">
+				<hr class="my-4">
+				<div class="row" ng-repeat="row in myItems" >
+					<div class="col-md-4" ng-repeat="item in row">
+						<div class="card mb-4 box-shadow">
+							<img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{item[3]}}" alt="Card image cap">
+							<div class="card-body">
+								<p class="card-text">{{item[5] ? item[5] : 'No description'}}</p>
+								<div class="d-flex justify-content-between align-items-center">
+									<div class="btn-group">
+										<button ng-if="item[7] == 0" class="btn btn-sm btn-success" ng-click="editItem(item[0])">Edit</button>
+										<button ng-if="item[7] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
+										<button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[4]}}</button>
+									</div>
+									<small class="text-muted">Owner: {{item[1]}}</small>
+									<small class="text-muted">{{item[6]}} days</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="lead" ng-if="myItems == undefined">Login to manage your items</p>
+			<p class="lead" ng-if="myItems.length == 0">None yet, add one?</p>
+			<hr class="my-4">
+			<p class="lead" ng-if="myItems != undefined">
+				<a class="btn btn-primary btn-lg" href="#!/items/add" role="button">Add Item</a>
+			</p>
+		</div>
+		<h1 class="display-4">All Items</h1>
+		<hr class="my-4">
+		<div class="row" ng-repeat="row in allItems">
+			<div class="col-md-4" ng-repeat="item in row">
+				<div class="card mb-4 box-shadow">
+					<img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{item[3]}}" alt="Card image cap">
+					<div class="card-body">
+						<p class="card-text">{{item[5] ? item[5] : 'No description'}}</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+								<a ng-if="item[7] == 0" href="#!/items/bid/{{item[0]}}" type="button" class="btn btn-sm btn-success">Bid</a>
+								<button ng-if="item[7] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
+								<button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[4]}}</button>
+							</div>
+							<small class="text-muted">Owner: {{item[1]}}</small>
+							<small class="text-muted">{{item[6]}} days</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

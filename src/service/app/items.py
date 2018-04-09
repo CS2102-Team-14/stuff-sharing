@@ -114,7 +114,7 @@ def item_delete(item_id):
 		else:
 			return respond_invalid_token()
 
-@items_controller.route("/items/bid/<int:item_id>", methods=["POST"])
+@items_controller.route("/items/<int:item_id>/bid", methods=["POST"])
 def item_bid(item_id):
 	if request.method == "POST":
 		post_data = request.get_json() or {}
@@ -135,7 +135,7 @@ def item_bid(item_id):
 		else:
 			return respond_invalid_token()
 
-@items_controller.route("/items/bids/<int:item_id>", methods=["POST"])
+@items_controller.route("/items/<int:item_id>/bids", methods=["POST"])
 def item_bids(item_id):
 	if request.method == "POST":
 		post_data = request.get_json() or {}
@@ -146,6 +146,26 @@ def item_bids(item_id):
 			with app.get_db().cursor() as cursor:
 				try:
 					cursor.execute("SELECT * FROM bids WHERE item_id = %s ORDER BY amount DESC", [item_id])
+					bids = cursor.fetchall()
+					return jsonify({"error": False, "bids": bids})
+				except Exception as e:
+					print_msg("%s %s" % (type(e), e))
+					return jsonify({"error": "Unknown error"})
+		else:
+			return respond_invalid_token()
+
+@items_controller.route("/bids", methods=["POST"])
+def user_bids():
+	if request.method == "POST":
+		post_data = request.get_json() or {}
+		token = post_data.get("token")
+
+		is_token_valid, username = users.validate_token(token)
+		if is_token_valid:
+			with app.get_db().cursor() as cursor:
+				try:
+					cursor.execute("SELECT * FROM bids INNER JOIN items ON bids.item_id = items.id WHERE bids.username = %s",
+					[username])
 					bids = cursor.fetchall()
 					return jsonify({"error": False, "bids": bids})
 				except Exception as e:

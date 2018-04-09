@@ -32,7 +32,8 @@ CREATE TABLE items (
 CREATE TABLE bids (
 	item_id SERIAL REFERENCES items(id),
 	username TEXT REFERENCES users(username),
-	amount NUMERIC NOT NULL
+	amount NUMERIC NOT NULL,
+  UNIQUE(item_id, username, amount)
 );
 
 CREATE FUNCTION create_bid(
