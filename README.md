@@ -1,11 +1,10 @@
 # Stuff Sharing Web Application by Team 14
-TODO: Write a description and architecture of the application.
 
 # Running the application
 You will need to install docker and start the docker service. Then execute `run.sh` as root which will set up an instance of the application frontend on port 80, and application backend on port 8080.
 
 ```bash
-$ sudo apt install docker
+$ sudo apt install docker.io
 $ sudo systemctl start docker
 $ sudo sh run.sh
 ```
@@ -19,7 +18,9 @@ We'll be using python Flask framework and the bcrypt module.
 
 ```bash
 sudo pip install flask
+sudo pip install flask-cors
 sudo pip install bcrypt
+sudo pip install psycopg2-binary
 ```
 
 ## Configuring PostgreSQL
@@ -37,10 +38,16 @@ We then need to create a role for the user which is going to interact with Postg
 $ psql --command "CREATE USER root WITH SUPERUSER PASSWORD 'root';"
 ```
 
+And create the database for the new user
+
+```bash
+$ createdb -O root root
+```
+
 We will use the Flask CLI to initialize the database with our schema at `src/service/schema.sql`.
 
 ```bash
-$ cd service/app
+$ cd src/service/app
 $ export FLASK_APP=app.py
 $ flask initdb
 ```
