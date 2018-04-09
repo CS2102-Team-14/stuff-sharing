@@ -44,7 +44,7 @@
             <p class="card-text">{{item[5] ? item[5] : 'No description'}}</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <button ng-if="item[7] == 0" type="button" class="btn btn-sm btn-success">Bid</button>
+                <a ng-if="item[7] == 0" href="#!/items/bid/{{item[0]}}" type="button" class="btn btn-sm btn-success">Bid</a>
                 <button ng-if="item[7] == 1" type="button" class="btn btn-sm btn-info disabled">On Loan</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary disabled">{{'$'+item[4]}}</button>
               </div>

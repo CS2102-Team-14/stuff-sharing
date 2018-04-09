@@ -1,0 +1,51 @@
+<div class="py-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="card col-md-8 mx-auto" style="padding-top: 10px;">
+				<img class="card-img-top" holder-js="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text={{'Item Photo'}}" alt="Card image cap">
+				<div class="card-body">
+					<h5 class="card-title">{{item[3]}}</h5>
+					<p class="card-text">{{item[5]}}</p>
+					<hr>
+					<div class="d-flex justify-content-between align-items-center">
+						<p>Owner: {{item[1]}}</p>
+						<p>Starting bid: {{item[4] | currency : $ : 2}}</p>
+						<p>Loan Duration: {{item[6]}} days</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="album py-5 bg-light">
+	<div class="container">
+		<div class="jumbotron">
+			<h1 class="display-4">Current Bids</h1>
+			<hr class="my-4">
+			<div ng-repeat="bid in bids" class="alert alert-{{$index == 0 ? 'success' : 'danger'}}" role="alert">
+				<strong>{{bid[2] | currency : $ : 2}}</strong> offered by <strong>{{bid[1]}}</strong>
+			</div>
+			<div ng-if="bids.length == 0" class="alert alert-danger" role="alert">
+				No bids yet
+			</div>
+			<hr class="my-4">
+			<form class="col-md-8 mx-auto">
+				<div class="form-group row">
+					<label for="itemPrice" class="col-sm-2 col-form-label">Item Price</label>
+					<div class="input-group mb-3 col-sm-10">
+						<div class="input-group-prepend">
+							<span class="input-group-text">$</span>
+						</div>
+						<input ng-model="amount" type="number" class="form-control" id="itemPrice" value="1" required>
+						<div class="input-group-append">
+							<span class="input-group-text">.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<button class="btn btn-large btn-success col-sm-6 mx-auto" ng-click="submitBid()">Place Bid</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

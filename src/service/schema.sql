@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS sessions CASCADE;
 DROP TABLE IF EXISTS items CASCADE;
+DROP TABLE IF EXISTS bids CASCADE;
+DROP FUNCTION IF EXISTS create_bid;
 
 CREATE TABLE users (
   username TEXT PRIMARY KEY,
@@ -15,17 +17,47 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE items (
-  id SERIAL PRIMARY KEY,
-  owner TEXT REFERENCES users(username),
-  borrower TEXT REFERENCES users(username),
-  item_name TEXT NOT NULL,
-  item_price NUMERIC NOT NULL,
-  item_description TEXT,
-  loan_duration INTEGER NOT NULL,
-  status INTEGER NOT NULL DEFAULT 0,
-  CONSTRAINT owner_not_borrower CHECK (owner <> borrower),
-  CONSTRAINT price_gt_zero CHECK (item_price > 0)
+	id SERIAL PRIMARY KEY,
+	owner TEXT REFERENCES users(username),
+	borrower TEXT REFERENCES users(username),
+	item_name TEXT NOT NULL,
+	item_price NUMERIC NOT NULL,
+	item_description TEXT,
+	loan_duration INTEGER NOT NULL,
+	status INTEGER NOT NULL DEFAULT 0,
+	CONSTRAINT owner_not_borrower CHECK (owner <> borrower),
+	CONSTRAINT price_gt_zero CHECK (item_price > 0)
 );
+
+CREATE TABLE bids (
+	item_id SERIAL REFERENCES items(id),
+	username TEXT REFERENCES users(username),
+	amount NUMERIC NOT NULL
+);
+
+CREATE FUNCTION create_bid(
+	_item_id INTEGER,
+	_username TEXT,
+	_amount NUMERIC)
+RETURNS VOID AS $$
+BEGIN
+	-- Check that item exists and is not on loan
+	-- Check that bidder is not owner
+	-- Check that new bid is larger than all existing bids
+	-- Check that new bid is at least listed price
+	IF NOT EXISTS(SELECT * FROM items WHERE items.id = _item_id AND items.status = 0) THEN
+		RAISE EXCEPTION 'Invalid item ID';
+	ELSEIF EXISTS(SELECT * FROM items WHERE items.id = _item_id AND items.owner = _username) THEN
+		RAISE EXCEPTION 'Bidder must not be item owner';
+	ELSEIF EXISTS(SELECT * FROM bids WHERE bids.item_id = _item_id AND bids.amount >= _amount) OR
+		(SELECT item_price FROM items WHERE items.id = _item_id) > _amount THEN
+		RAISE EXCEPTION 'Bid must exceed list price and all other bids';
+	ELSE
+		INSERT INTO bids VALUES(_item_id, _username, _amount);
+	END IF;
+END; $$
+ 
+LANGUAGE plpgsql;
 
 INSERT INTO users VALUES (
   'tester1',

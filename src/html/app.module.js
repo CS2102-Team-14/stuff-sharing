@@ -5,5 +5,8 @@ var app = angular.module('app', [
   'login',
   'navbar',
   'itemsList',
-  'itemForm'
-]);
+  'itemForm',
+  'itemBid'
+]).controller("AlertsController", function AlertsController($scope, AlertsService) {
+	$scope.AlertsService = AlertsService;
+})
