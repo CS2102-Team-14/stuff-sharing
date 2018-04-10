@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS sessions CASCADE;
 DROP TABLE IF EXISTS items CASCADE;
 DROP TABLE IF EXISTS bids CASCADE;
 DROP FUNCTION IF EXISTS create_bid;
+DROP FUNCTION IF EXISTS accept_bid;
 
 CREATE TABLE users (
   username TEXT PRIMARY KEY,
@@ -57,7 +58,29 @@ BEGIN
 		INSERT INTO bids VALUES(_item_id, _username, _amount);
 	END IF;
 END; $$
- 
+LANGUAGE plpgsql;
+
+CREATE FUNCTION accept_bid(
+  _item_id INTEGER,
+  _owner TEXT,
+  _bidder TEXT,
+  _amount NUMERIC)
+RETURNS VOID AS $$
+BEGIN
+  -- Check that item exists and is not on loan
+  -- Check that owner owns the item
+  -- Check that bid exists
+  IF NOT EXISTS(SELECT * FROM items WHERE items.id = _item_id AND items.status = 0) THEN
+    RAISE EXCEPTION 'Invalid item ID';
+  ELSEIF NOT EXISTS(SELECT * FROM items WHERE items.id = _item_id AND items.owner = _owner) THEN
+    RAISE EXCEPTION 'Not item owner, cannot accept bid';
+  ELSEIF NOT EXISTS(SELECT * FROM bids WHERE bids.item_id = _item_id AND bids.username = _bidder AND bids.amount = _amount) THEN
+    RAISE EXCEPTION 'Bid does not exist';
+  ELSE
+    UPDATE items SET borrower = _bidder WHERE id = _item_id;
+    DELETE FROM bids WHERE item_id = _item_id;
+  END IF;
+END; $$
 LANGUAGE plpgsql;
 
 INSERT INTO users VALUES (

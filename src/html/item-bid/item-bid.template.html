@@ -23,7 +23,7 @@
 			<h1 class="display-4">Current Bids</h1>
 			<hr class="my-4">
 			<div ng-repeat="bid in bids" class="alert alert-{{$index == 0 ? 'success' : 'danger'}}" role="alert">
-				<button ng-click="acceptBid(bid[1], bid[2])" type="button" class="btn btn-small btn-success">Accept</button>&nbsp;&nbsp;
+				<button ng-click="acceptBid(bid[0], bid[1], bid[2])" type="button" class="btn btn-small btn-success">Accept</button>&nbsp;&nbsp;
 				<strong>{{bid[2] | currency : $ : 2}}</strong> offered by <strong>{{bid[1]}}</strong>
 			</div>
 

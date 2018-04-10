@@ -181,12 +181,35 @@ def user_bids():
 		if is_token_valid:
 			with app.get_db().cursor() as cursor:
 				try:
-					cursor.execute("SELECT * FROM bids INNER JOIN items ON bids.item_id = items.id WHERE bids.username = %s",
+					cursor.execute("SELECT * FROM (SELECT item_id, username, MAX(amount) FROM bids WHERE bids.username = %s GROUP BY item_id, username) AS max_bids INNER JOIN items on max_bids.item_id = items.id",
 					[username])
 					bids = cursor.fetchall()
 					return jsonify({"error": False, "bids": bids})
 				except Exception as e:
 					print_msg("%s %s" % (type(e), e))
 					return jsonify({"error": "Unknown error"})
+		else:
+			return respond_invalid_token()
+
+@items_controller.route("/bids/accept", methods=["POST"])
+def accept_bid():
+	if request.method == "POST":
+		post_data = request.get_json() or {}
+		token = post_data.get("token")
+		item_id = post_data.get("item_id")
+		bidder = post_data.get("bidder")
+		amount = post_data.get("amount")
+
+		is_token_valid, username = users.validate_token(token)
+		if is_token_valid:
+			with app.get_db().cursor() as cursor:
+				try:
+					cursor.execute("SELECT accept_bid(%s, %s, %s, %s)", [item_id, username, bidder, amount])
+					cursor.connection.commit()
+					print_msg("Bid successfully accepted")
+					return jsonify({"error": False})
+				except Exception as e:
+					print_msg("%s %s" % (type(e), e))
+					return jsonify({"error": str(e).split("CONTEXT")[0]})
 		else:
 			return respond_invalid_token()
