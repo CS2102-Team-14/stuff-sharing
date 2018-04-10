@@ -54,6 +54,23 @@ def items():
 				print_msg("%s %s" % (type(e), e))
 				return jsonify({"error": "Unknown error"})
 
+@items_controller.route("/items/search", methods=["POST"])
+def item_search():
+	if request.method == "POST":
+		post_data = request.get_json() or {}
+		search = post_data.get("search") or ""
+
+		with app.get_db().cursor() as cursor:
+			try:
+				cursor.execute("SELECT * FROM items WHERE item_name LIKE %s LIMIT 10",
+				["%%%s%%" % search])
+				items = cursor.fetchall()
+				return jsonify({"error": False, "items": items})
+			except Exception as e:
+				print_msg("%s %s" % (type(e), e))
+				return jsonify({"error": "Unknown error"})
+
+
 @items_controller.route("/items/<int:item_id>", methods=["GET", "PUT"])
 def item_details(item_id):
 	if request.method == "GET":

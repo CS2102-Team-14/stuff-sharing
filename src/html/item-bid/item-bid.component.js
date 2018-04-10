@@ -45,7 +45,27 @@ component('itemBid', {
 					console.log(error);
 				}
 			);
-		}
+		};
+
+		$scope.acceptBid = function acceptBid(username, amount) {
+			if(confirm("Are you sure you want to accept the bid of $" + amount + " from " + username + "?")) {
+				var id = parseInt($routeParams.id);
+				SessionService.authenticatedRequest(
+					'POST',
+					'/items/' + id + '/accept_bid',
+					{
+						'amount': amount,
+						'username': username,
+					},
+					function success(response) {
+						console.log(response.data);
+					},
+					function error(error) {
+						console.log(error);
+					}
+				);
+			}
+		};
 
 		$scope.bids = {};
 		$scope.refreshBids = function refreshBids() {
