@@ -2,7 +2,8 @@
 	<div class="container">
 		<div class="row">
 			<form class="col-md-4 mx-auto">
-				<h1 class="display-4">Edit Item</h1>
+				<h1 ng-if="!showDelete" class="display-4">Add Item</h1>
+				<h1 ng-if="showDelete" class="display-4">Edit Item</h1>
 				<hr class="my-4">
 				<div class="form-group">
 					<label for="itemName">Item Name</label>

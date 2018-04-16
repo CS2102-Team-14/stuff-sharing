@@ -21,7 +21,7 @@ def respond_invalid_item_id():
 	print_msg(error)
 	return jsonify({"error": error})
 
-@items_controller.route("/items", methods=["GET", "POST"])
+@items_controller.route("/items", methods=["GET", "POST", "PUT"])
 def items():
 	if request.method == "GET":
 		with app.get_db().cursor() as cursor:
@@ -53,6 +53,29 @@ def items():
 			except Exception as e:
 				print_msg("%s %s" % (type(e), e))
 				return jsonify({"error": "Unknown error"})
+	elif request.method == "PUT":
+		post_data = request.get_json() or {}
+		token = post_data.get("token")
+		item_name = post_data.get("name")
+		item_description = post_data.get("description") or None
+		item_price = post_data.get("price")
+		item_duration = post_data.get("duration")
+
+		# TODO: Validation of parameters
+		is_token_valid, username = users.validate_token(token)
+		if is_token_valid:
+			with app.get_db().cursor() as cursor:
+				cursor.execute(
+				"INSERT INTO items(owner,borrower,item_name,item_price,item_description,loan_duration) VALUES(%s,NULL,%s,%s,%s,%s)",
+				[username,item_name, item_price, item_description, item_duration])
+				cursor.connection.commit()
+				print_msg("Created item")
+				if cursor.rowcount == 1:
+					return jsonify({"error": False})
+				else:
+					return respond_invalid_item_id()
+		else:
+			return respond_invalid_token()
 
 @items_controller.route("/items/search", methods=["POST"])
 def item_search():

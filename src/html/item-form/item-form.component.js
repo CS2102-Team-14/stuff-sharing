@@ -3,7 +3,7 @@
 angular.module('itemForm').
 component('itemForm', {
 	templateUrl: 'item-form/item-form.template.html',
-	controller: function ItemFormController($scope, $location, $routeParams, $window, SessionService) {
+	controller: function ItemFormController($scope, $location, $routeParams, $window, SessionService, AlertsService) {
 		if($routeParams.id != undefined) {
 			var id = parseInt($routeParams.id);
 			SessionService.request(
@@ -42,18 +42,33 @@ component('itemForm', {
 		}
 
 		$scope.submit = function submit() {
-			var id = parseInt($routeParams.id);
-			SessionService.authenticatedRequest(
-				'PUT',
-				'/items/' + id,
-				$scope.item,
-				function success(response) {
-					$location.path('/items');
-				},
-				function error(error) {
-					console.log(error)
-				}
-			);
+			if($routeParams.id != undefined) {
+				var id = parseInt($routeParams.id);
+				SessionService.authenticatedRequest(
+					'PUT',
+					'/items/' + id,
+					$scope.item,
+					function success(response) {
+						$location.path('/items');
+					},
+					function error(error) {
+						console.log(error)
+					}
+				);
+			} else {
+				SessionService.authenticatedRequest(
+					'PUT',
+					'/items',
+					$scope.item,
+					function success(response) {
+						AlertsService.addAlert('success', "Item successfully listed");
+						$location.path('/items');
+					},
+					function error(error) {
+						console.log(error)
+					}
+				);
+			}
 		}
 
 		$scope.deleteItem = function deleteItem() {
