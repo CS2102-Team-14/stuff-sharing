@@ -12,8 +12,14 @@
 			</p>
 			<hr class="my-4">
 			<h1 class="display-4">My Items</h1>
+			<hr class="my-4">
+			<blockquote class="blockquote">
+				<p><strong>Listed Items</strong>: {{itemsStats[0]}}</p>
+				<p><strong>Item Prices</strong>: Minimum - {{itemsStats[1]|currency:$:2}}, Maximum - {{itemsStats[2]|currency:$:2}}, Average - {{itemsStats[3]|currency:$:2}}</p>
+				<p><strong>Loan Durations</strong>: Minimum - {{itemsStats[4]}} days, Maximum - {{itemsStats[5]}} days, Average - {{itemsStats[6]}} days</p>
+			</blockquote>
+			<hr class="my-4">
 			<div class="container" ng-if="myItems != undefined && myItems.length > 0">
-				<hr class="my-4">
 				<div class="row" ng-repeat="row in myItems" >
 					<div class="col-md-4" ng-repeat="item in row">
 						<div class="card mb-4 box-shadow">

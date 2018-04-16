@@ -36,23 +36,24 @@ def items():
 		post_data = request.get_json() or {}
 		token = post_data.get("token")
 
-		with app.get_db().cursor() as cursor:
-			try:
-				cursor.execute(
-				"SELECT * FROM sessions WHERE token = %s",
-				[str(token)])
-				session = cursor.fetchone()
-				if session is None:
-					return respond_invalid_token()
-				else:
+		is_token_valid, username = users.validate_token(token)
+		if is_token_valid:
+			with app.get_db().cursor() as cursor:
+				try:
 					cursor.execute(
 					"SELECT * FROM items WHERE owner = %s",
-					[session[0]])
+					[username])
 					items = cursor.fetchall()
-					return jsonify({"error": False, "items": items})
-			except Exception as e:
-				print_msg("%s %s" % (type(e), e))
-				return jsonify({"error": "Unknown error"})
+					cursor.execute(
+					"SELECT COUNT(*), MIN(item_price), MAX(item_price), AVG(item_price), MIN(loan_duration), MAX(loan_duration), AVG(loan_duration) FROM items WHERE owner = %s GROUP BY owner",
+					[username])
+					items_stats = cursor.fetchone()
+					return jsonify({"error": False, "items": items, "items_stats": items_stats})
+				except Exception as e:
+					print_msg("%s %s" % (type(e), e))
+					return jsonify({"error": "Unknown error"})
+		else:
+			return respond_invalid_token()
 	elif request.method == "PUT":
 		post_data = request.get_json() or {}
 		token = post_data.get("token")
@@ -74,8 +75,7 @@ def items():
 					return jsonify({"error": False})
 				else:
 					return respond_invalid_item_id()
-		else:
-			return respond_invalid_token()
+		
 
 @items_controller.route("/items/search", methods=["POST"])
 def item_search():

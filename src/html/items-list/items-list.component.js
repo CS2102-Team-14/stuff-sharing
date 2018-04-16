@@ -23,7 +23,9 @@ component('itemsList', {
 			function successCallback(response) {
 				var data = response.data;
 				$scope.myItems = makeColums(data.items);
-				console.log("My items: ", $scope.myItems);
+				$scope.itemsStats = data.items_stats;
+				console.log("My items: ", data.items);
+				console.log("My items stats: ", data.items_stats);
 			},
 			function errorCallback(error) {
 				console.log(error);
